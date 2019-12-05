@@ -58,7 +58,7 @@ public class ChangeColor : MonoBehaviour
             meshRender1.material = Wind;
 
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             meshRender3.material = meshRender2.material = meshRender1.material = Default;
         }
