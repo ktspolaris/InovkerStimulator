@@ -30,7 +30,9 @@ public class Character : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
            this.transform.Rotate(new Vector3(0,0,1) * -rotateSpeed * Time.deltaTime);
-            
+            animator.SetBool("Iswalk", true);
+
+
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
