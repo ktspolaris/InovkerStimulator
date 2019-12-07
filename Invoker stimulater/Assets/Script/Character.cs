@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 
-   
+
 {
     public float speed;
     public float rotateSpeed;
-    public Transform bullet;
+    public GameObject gamePlay;
+    public Transform fireBall;
+    public Transform flash;
+    public Transform wave;
     public GameObject shotSpawn;
     public Animator animator;
     // Start is called before the first frame update
@@ -16,27 +19,27 @@ public class Character : MonoBehaviour
     {
         Rigidbody rigidbody = this.GetComponent<Rigidbody>();
         animator = this.GetComponent<Animator>();
+
     }
 
-    // Update is called once per frame
-    void Update()
+    void Movement()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-          this.transform.Rotate(new Vector3(0,0,1) * rotateSpeed * Time.deltaTime);
+            this.transform.Rotate(new Vector3(0, 0, 1) * rotateSpeed * Time.deltaTime);
             animator.SetBool("Iswalk", true);
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
-           this.transform.Rotate(new Vector3(0,0,1) * -rotateSpeed * Time.deltaTime);
+            this.transform.Rotate(new Vector3(0, 0, 1) * -rotateSpeed * Time.deltaTime);
             animator.SetBool("Iswalk", true);
 
 
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            this.transform.Translate(new Vector2(0,1) * speed * Time.deltaTime);
+            this.transform.Translate(new Vector2(0, 1) * speed * Time.deltaTime);
             animator.SetBool("Iswalk", true);
 
         }
@@ -46,7 +49,8 @@ public class Character : MonoBehaviour
             animator.SetBool("Iswalk", true);
 
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow)) {
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
             animator.SetBool("Iswalk", false);
         }
         if (Input.GetKeyUp(KeyCode.RightArrow))
@@ -61,20 +65,48 @@ public class Character : MonoBehaviour
         {
             animator.SetBool("Iswalk", false);
         }
-       
+    }
+    void Attack()
+    {
 
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
 
-            Instantiate(bullet, shotSpawn.transform.position, shotSpawn.transform.rotation);
-            animator.SetBool("Isattack", true);
-        
+        if (GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofFire == 3 && GameObject.Find("GamePlay").GetComponent<ChangeColor>().invoked)
+        {
+            Instantiate(fireBall, shotSpawn.transform.position, shotSpawn.transform.rotation);
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofWater == 3 && GameObject.Find("GamePlay").GetComponent<ChangeColor>().invoked)
+        {
+            Instantiate(wave, shotSpawn.transform.position, shotSpawn.transform.rotation);
+        }
+
+        if (GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofFire == 1 && GameObject.Find("GamePlay").GetComponent<ChangeColor>().invoked&&
+            GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofWind == 2)
+        {
+            Instantiate(flash, shotSpawn.transform.position, shotSpawn.transform.rotation);
+        }
+
+
+        animator.SetBool("Isattack", true);
+
+
+    }
+    // Update is called once per frame
+    void Update()
+    {
+
+        Movement();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            Attack();
+
+
+        }
+       if (Input.GetKeyUp(KeyCode.Space))
         {
             animator.SetBool("Isattack", false);
         }
-
-
     }
 }
