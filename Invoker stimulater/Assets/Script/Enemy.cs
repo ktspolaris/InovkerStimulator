@@ -23,19 +23,26 @@ public class Enemy : MonoBehaviour
         if(collision.gameObject.tag == "FireBall" ){
             animator.SetBool("IsBurned", true);
             Destroy(this.gameObject, 2);
+            Destroy(collision.gameObject);
+
         }
 
         if (collision.gameObject.tag == "Flash")
         {
             animator.SetBool("IsZapped", true);
+        Destroy(collision.gameObject);
             Destroy(this.gameObject, 2);
         }
 
         if (collision.gameObject.tag == "Wave")
         {
             animator.SetBool("IsWetted", true);
+        Destroy(collision.gameObject);
             Destroy(this.gameObject, 2);
         }
-        Destroy(collision.gameObject);
+      
     }
+
+
+
 }

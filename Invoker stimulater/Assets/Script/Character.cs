@@ -8,6 +8,7 @@ public class Character : MonoBehaviour
 {
     public float speed;
     public float rotateSpeed;
+    public float ReturnForce;
     public GameObject gamePlay;
     public Transform fireBall;
     public Transform flash;
@@ -68,27 +69,19 @@ public class Character : MonoBehaviour
     }
     void Attack()
     {
-
-
-
-        if (GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofFire == 3 && GameObject.Find("GamePlay").GetComponent<ChangeColor>().invoked)
+        switch (GameObject.Find("GamePlay").GetComponent<ChangeColor>().skillNumber)
         {
-            Instantiate(fireBall, shotSpawn.transform.position, shotSpawn.transform.rotation);
+            case 1:
+                Instantiate(fireBall, shotSpawn.transform.position, shotSpawn.transform.rotation);
+                break;
+            case 2:
+                Instantiate(wave, shotSpawn.transform.position, shotSpawn.transform.rotation);
+                break;
+            case 9:
+                Instantiate(flash, shotSpawn.transform.position, shotSpawn.transform.rotation);
+                break;
         }
-        if (GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofWater == 3 && GameObject.Find("GamePlay").GetComponent<ChangeColor>().invoked)
-        {
-            Instantiate(wave, shotSpawn.transform.position, shotSpawn.transform.rotation);
-        }
-
-        if (GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofFire == 1 && GameObject.Find("GamePlay").GetComponent<ChangeColor>().invoked&&
-            GameObject.Find("GamePlay").GetComponent<ChangeColor>().numofWind == 2)
-        {
-            Instantiate(flash, shotSpawn.transform.position, shotSpawn.transform.rotation);
-        }
-
-
         animator.SetBool("Isattack", true);
-
 
     }
     // Update is called once per frame
@@ -108,5 +101,21 @@ public class Character : MonoBehaviour
         {
             animator.SetBool("Isattack", false);
         }
+
+        if (Input.GetKeyDown(KeyCode.Z)) {
+            this.GetComponent<Hp>().TakeDamage();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")// May add a specific "ARM" collider to test
+        {
+            this.GetComponent<Hp>().TakeDamage();
+            //Debug.Log("touch");
+        }
+
+        this.transform.Translate(new Vector2(0, 1) * -ReturnForce * Time.deltaTime);
+        
     }
 }
